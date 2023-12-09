@@ -1,0 +1,63 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+import matplotlib.pyplot as plt
+
+# Load your dataset (replace "your_dataset.csv" with your actual file path)
+df = pd.read_csv("Heart_Disease_prediction.csv")
+
+# Display the first few rows of the DataFrame
+print("Original Dataset:")
+print(df.head())
+
+# Check for missing values
+print("\nMissing Values:")
+print(df.isnull().sum())
+
+# Handle missing values if needed
+# Example: Impute missing values with the mean for numerical columns
+df = df.fillna(df.mean())
+
+# Identify features (X) and target variable (y)
+# Replace 'target_column_name' with your actual target column name
+X = df.drop('Cholesterol', axis=1)
+y = df['Heart Disease']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Identify categorical columns (you may need to adjust this based on your dataset)
+categorical_cols = X.select_dtypes(include=['object']).columns
+
+# Create a preprocessor with one-hot encoding for categorical columns
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('num', StandardScaler(), X.select_dtypes(exclude=['object']).columns),
+        ('cat', OneHotEncoder(), categorical_cols)
+    ])
+
+# Create a pipeline with the preprocessor and logistic regression model
+model = Pipeline(steps=[('preprocessor', preprocessor),
+                        ('classifier', LogisticRegression())])
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred = model.predict(X_test)
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+conf_matrix = confusion_matrix(y_test, y_pred)
+classification_report_str = classification_report(y_test, y_pred)
+
+# Print results
+print(f"Accuracy: {accuracy:.2f}")
+print("\nConfusion Matrix:")
+print(conf_matrix)
+print("\nClassification Report:")
+print(classification_report_str)
