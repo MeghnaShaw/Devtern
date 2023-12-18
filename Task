@@ -1,6 +1,0 @@
-Task 1:Heart Disease Prediction Using Logistic Regression.
-Objective: The objective of this task is to build a logistic regression model to predict the risk of heart disease in patients.
-Prepare the dataset for machine learning. This includes cleaning the data, removing missing values, and splitting the data into training and test sets.
-Build a logistic regression model to predict the risk of heart disease.
-Evaluate the performance of the model on the test set.
-Analyze the model coefficients to understand the importance of the different features.
