@@ -1,0 +1,4 @@
+Prepare the dataset for machine learning. This includes cleaning the data, removing missing values, and splitting the data into training and test sets.
+Build a TensorFlow model to detect spam emails.
+Evaluate the performance of the model on the test set.
+Analyze the model coefficients to understand the importance of the different features.
